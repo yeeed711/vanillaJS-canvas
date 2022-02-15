@@ -17,32 +17,27 @@ function gamePlay() {
     const Value = parseInt(generateInput.value);
     const guessValue = parseInt(guessInput.value);
     const randomValue = Math.ceil(Math.random() * parseInt(Value));
-    if (guessValue > Value) {
+    if (isNaN(guessValue) || isNaN(Value)){
+        return
+    }
+    
+    else if (guessValue > Value) {
         alert(`0과 ${Value}사이의 숫자를 넣어주세요!`);
     }
-    else{
+    else {
         yourNumber.innerText = `You chose: ${guessValue}, `;
         machineNumber.innerText = `the machine chose: ${randomValue}.`;
     }
     //게임결과
-   /* if (randomValue === guessValue) {
-        result.innerText = "You Won!!!!!";
-    }
-    else {
-        result.innerText = "You lost";
-    } */
-}
-
-function result(){
-    if(gamePlay()){
+    if (randomValue === guessValue) {
         result.innerText = "You Won!!!!!";
     }
     else {
         result.innerText = "You lost";
     }
-
+    console.log(Value);
 }
 
 
 generateForm.addEventListener("submit", formSubmit);
-button.addEventListener("click", gamePlay,result);
+button.addEventListener("click", gamePlay);
