@@ -3,14 +3,21 @@ const ctx = canvas.getContext("2d");
 const colors = document.getElementsByClassName("jsColor");
 const range = document.getElementById("jsRange");
 const mode = document.getElementById("jsMode");
+const saveBtn = document.getElementById("jsSave");
+
+const INITIAL_COLOR = "#2c2c2c";
+const CANVAS_SIZE = 600;
 
 // js는 css에서 설정한 canvas의 width,height의 값을 받아오지않는다
 // 따로 값을 지정해줘야 설정한 painting이 가능
 // 픽셀값을 자바스크립트 안에서도 지정을 해주어야함
-canvas.width = 600;
-canvas.height = 600;
+canvas.width = CANVAS_SIZE;
+canvas.height = CANVAS_SIZE;
 
-ctx.strokeStyle = "#2c2c2c";
+ctx.fillStyle = "white";
+ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+ctx.strokeStyle = INITIAL_COLOR;
+ctx.fillStyle = INITIAL_COLOR;
 ctx.lineWidth = 2.5;
 
 let painting = false;
@@ -39,7 +46,7 @@ function onMouseMove(event) {
 function handleColorClick(event) {
     const color = event.target.style.backgroundColor;
     ctx.strokeStyle = color;
-  
+    ctx.fillStyle = color;
     
 }
 
@@ -59,11 +66,31 @@ function handleModeClick() {
 
 }
 
+function heandleCanvasClick() {
+    if(filling) {
+        ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+    }
+}
+
+function handleCM(event){
+    event.preventDefault();
+}
+
+function handleSaveClick() {
+    const image = canvas.toDataURL();
+    const link = document.createElement("a");
+    link.href = image;
+    link.download = "PaintJS[🎨]";
+    link.click();
+}
+
 if (canvas) {
     canvas.addEventListener("mousemove", onMouseMove);
     canvas.addEventListener("mousedown", startPainting);
     canvas.addEventListener("mouseup", stopPainting);
     canvas.addEventListener("mouseleave", stopPainting);
+    canvas.addEventListener("click", heandleCanvasClick);
+    canvas.addEventListener("contextmenu",handleCM)
 }
 
 Array.from(colors).forEach(color => color.addEventListener("click", handleColorClick));
@@ -74,4 +101,8 @@ if(range) {
 
 if(mode) {
     mode.addEventListener("click", handleModeClick);
+}
+
+if(saveBtn){
+    saveBtn.addEventListener("click", handleSaveClicks);
 }
